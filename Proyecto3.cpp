@@ -656,7 +656,7 @@ int main()
         std::cout << "2. Trazabilidad de objetos" << std::endl;
         std::cout << "3. Eventos de cada escenario" << std::endl;
         std::cout << "4. Salir" << std::endl;
-        std::cout << "Seleccione una opción: ";
+        std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
 
         switch (opcion) {

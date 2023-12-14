@@ -48,7 +48,7 @@ vector<int> numerosAleatoriosSinRepeticion(int min, int max, int inicio, int fin
     uniform_int_distribution<int> dis_count(min, max);
     int contador = dis_count(gen);
 
-    set<int> random = numerosAleatorios(contador, inicio, fin);
+    set<int> random = numerosAleatorios(contador, 0, max);
     return vectorDesordenado(random);
 }
 
@@ -103,10 +103,17 @@ vector<vector<int>> datosPorCategoria(int categorias, int min, int max)
         uniform_int_distribution<int> dis_count(min, max);
         int contador = dis_count(gen);
 
-        set<int> numeros = numerosAleatorios(contador, 1, 100);
+        set<int> numeros;
+        uniform_int_distribution<int> dis(0, 2000);
+
+        // Generar un set de números únicos en el rango deseado
+        while (numeros.size() < contador) 
+        {
+            int numero = dis(gen);
+            numeros.insert(numero);
+        }
         datos[i] = vectorDesordenado(numeros);
     }
-
     return datos;
 }
 
@@ -582,7 +589,7 @@ int main()
     int objetosMinimos = 1000;
     int objetosMaximos = 1500;
 
-    vector<vector<int>> datosCategoria = datosPorCategoria(categorias, 10, 15);
+    vector<vector<int>> datosCategoria = datosPorCategoria(categorias, 1000, 1500);
 
     // Generar los conjuntos de datos de carrera con las características requeridas
     bool aleatorios = true;
@@ -607,66 +614,53 @@ int main()
     cout << "Datos en arreglo 1 " << colaSinRepeticion.size() << endl;
     cout << "Datos en arreglo 2 " << eventosSinRepeticion.size() << endl;
 
-    cout << "Carrera de algoritmos" << endl;
-    cout << "1. Ascendente." << endl; // true
-    cout << "2. Decendiente" << endl; // false
-    cout << "Opción elegida: " << endl;
-    int opcion;
-    cin >> opcion;
     int set = 1;
-    // Seleccionar el algoritmo de ordenamiento según la opción ingresada
-    switch (opcion) 
-    {
-        case 1:
-            
-            // Ejecutar el algoritmo de ordenamiento ascendente con los datos generados para el tablero
-            cout << "Carrera con el Tablero:";
-            carrera(1, colaSinRepeticion, true);
-            carrera(2, colaConRepeticion, true);
-            carrera(3, colaOrdenada, true);
-            carrera(4, colaInversa, true);
-            // Ejecutar el algoritmo de ordenamiento ascendente con los datos generados para los caminos
-            cout << "Carrera con los posibles Caminos:";
-            carrera(1, eventosSinRepeticion, true);
-            carrera(2, eventosConRepeticion, true);
-            carrera(3, eventosOrdenados, true);
-            carrera(4, eventosInversa, true);
-            cout << "Carrera con categorias:";
-            // Realizar las carreras con los conjuntos de datos generados
-            
-            for (auto& dato : informacionCarrera)
-            {
-                bool orden = true;
-                carrera(set, dato, orden);
-                set++;
-            }
-            break;
-        case 2:
-            // Ejecutar el algoritmo de ordenamiento descendente con los datos generados para el tablero
-            cout << "Carrera con el Tablero:";
-            carrera(1, colaSinRepeticion, false);
-            carrera(2, colaConRepeticion, false);
-            carrera(3, colaOrdenada, false);
-            carrera(4, colaInversa, false);
-            // Ejecutar el algoritmo de ordenamiento ascendente con los datos generados para los caminos
-            cout << "Carrera con los posibles Caminos:";
-            carrera(1, eventosSinRepeticion, false);
-            carrera(2, eventosConRepeticion, false);
-            carrera(3, eventosOrdenados, false);
-            carrera(4, eventosInversa, false);
-            cout << "Carrera con categorias:";
-            // Realizar las carreras con los conjuntos de datos generados
-            
-            for (auto& dato : informacionCarrera)
-            {
-                bool orden = true;
-                carrera(set, dato, !orden);
-                set++;
-            }
-            break;
-        default:
-            std::cout << "Opción inválida" << std::endl;
-            break;
-    }
+
+    int opcion = 0;
+
+    do {
+        std::cout << "Carrera de algoritmos" << std::endl;
+        std::cout << "1. Colas de espera" << std::endl;
+        std::cout << "2. Trazabilidad de objetos" << std::endl;
+        std::cout << "3. Eventos de cada escenario" << std::endl;
+        std::cout << "4. Salir" << std::endl;
+        std::cout << "Seleccione una opción: ";
+        std::cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                // Lógica para la carrera de colas de espera
+                cout << "Carrera de Colas de espera" << std::endl;
+                carrera(1, colaSinRepeticion, true);
+                carrera(2, colaConRepeticion, true);
+                carrera(3, colaOrdenada, true);
+                carrera(4, colaInversa, true);
+                break;
+            case 2:
+                // Lógica para la carrera de trazabilidad de objetos
+                cout << "Carrera de Trazabilidad de objetos" << std::endl;
+                for (auto& dato : informacionCarrera)
+                {
+                    bool orden = true;
+                    carrera(set, dato, !orden);
+                    set++;
+                }
+                break;
+            case 3:
+                // Lógica para la carrera de eventos de cada escenario
+                cout << "Carrera de Eventos de cada escenario" << std::endl;
+                carrera(1, eventosSinRepeticion, true);
+                carrera(2, eventosConRepeticion, true);
+                carrera(3, eventosOrdenados, true);
+                carrera(4, eventosInversa, true);
+                break;
+            case 4:
+                std::cout << "Saliendo del programa..." << std::endl;
+                break;
+            default:
+                std::cout << "Opción inválida. Por favor, seleccione una opción válida." << std::endl;
+                break;
+        }
+    } while (opcion != 4);
     return 0;
 }

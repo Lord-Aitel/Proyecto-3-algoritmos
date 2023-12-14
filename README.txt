@@ -30,3 +30,6 @@ El código está escrito en C++ y puede compilarse utilizando un compilador est�
 
 Ejecución
 Ejecute el programa compilado y siga las instrucciones en el menú para realizar carreras entre los algoritmos de ordenamiento.
+
+Autoria: Matias Peters
+Link Video: https://youtu.be/Z7x3o4txBM4

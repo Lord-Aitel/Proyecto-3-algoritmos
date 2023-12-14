@@ -427,9 +427,17 @@ void shellSort(vector<int>& datos, bool orden)
     }
 }
 
+
+struct ResultadoAlgoritmo 
+{
+    string nombre;
+    double tiempo;
+};
+
 // Función para realizar la carrera
 void carrera(int set, vector<int>& datos, bool orden) 
 {
+    vector<ResultadoAlgoritmo> resultados;
     switch (set)
     {
     case 1:
@@ -456,9 +464,12 @@ void carrera(int set, vector<int>& datos, bool orden)
     vector<int> bubble = datos;
     auto inicio = std::chrono::high_resolution_clock::now();
     bubbleSort(bubble, orden);
-    auto fin = std::chrono::high_resolution_clock::now();
+    auto fin = std::chrono::high_resolution_clock::now();    
     std::chrono::duration<double> duracion = fin - inicio;
-    cout << "1. Bubble Sort, " << duracion.count() << " segundos" << endl;
+    ResultadoAlgoritmo bubbleResult;
+            bubbleResult.nombre = "Bubble Sort";
+            bubbleResult.tiempo = duracion.count();
+            resultados.push_back(bubbleResult);
 
     if (duracion.count() < tiempoMasRapido)
     {algoritmoMasRapido = 1;tiempoMasRapido = duracion.count();}
@@ -469,7 +480,10 @@ void carrera(int set, vector<int>& datos, bool orden)
     heapSort(heap, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion2 = fin - inicio;
-    cout << "2. Heap Sort, " << duracion2.count() << " segundos" << endl;
+    ResultadoAlgoritmo HeapResult;
+            HeapResult.nombre = "Heap Sort";
+            HeapResult.tiempo = duracion2.count();
+            resultados.push_back(HeapResult);
 
     if (duracion2.count() < tiempoMasRapido)
     {algoritmoMasRapido = 2;tiempoMasRapido = duracion2.count();}
@@ -480,7 +494,10 @@ void carrera(int set, vector<int>& datos, bool orden)
     quickSort(quick, 0, quick.size() - 1, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion3 = fin - inicio;
-    cout << "3. Quick Sort, " << duracion3.count() << " segundos" << endl;
+    ResultadoAlgoritmo QuickResult;
+            QuickResult.nombre = "Quick Sort";
+            QuickResult.tiempo = duracion3.count();
+            resultados.push_back(QuickResult);
 
     if (duracion3.count() < tiempoMasRapido)
     {algoritmoMasRapido = 3;tiempoMasRapido = duracion3.count();}
@@ -491,7 +508,10 @@ void carrera(int set, vector<int>& datos, bool orden)
     mergeSort(merge, 0, merge.size() - 1, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion4 = fin - inicio;
-    cout << "4. Merge Sort, " << duracion4.count() << " segundos" << endl;
+    ResultadoAlgoritmo MergeResult;
+            MergeResult.nombre = "Merge Sort";
+            MergeResult.tiempo = duracion4.count();
+            resultados.push_back(MergeResult);
 
     // Actualizar el algoritmo más rápido
     if (duracion4.count() < tiempoMasRapido)
@@ -503,7 +523,10 @@ void carrera(int set, vector<int>& datos, bool orden)
     selectionSort(selection, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion5 = fin - inicio;
-    cout << "5. Selection Sort, " << duracion5.count() << " segundos" << endl;
+    ResultadoAlgoritmo SelectionResult;
+            SelectionResult.nombre = "Selection Sort";
+            SelectionResult.tiempo = duracion5.count();
+            resultados.push_back(SelectionResult);
 
     // Actualizar el algoritmo más rápido
     if (duracion5.count() < tiempoMasRapido)
@@ -515,7 +538,10 @@ void carrera(int set, vector<int>& datos, bool orden)
     insertionSort(insertion, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion6 = fin - inicio;
-    cout << "6. Insertion Sort, " << duracion6.count() << " segundos" << endl;
+    ResultadoAlgoritmo InsertionResult;
+            InsertionResult.nombre = "Insertion Sort";
+            InsertionResult.tiempo = duracion6.count();
+            resultados.push_back(InsertionResult);
 
     // Actualizar el algoritmo más rápido
     if (duracion6.count() < tiempoMasRapido)
@@ -527,11 +553,21 @@ void carrera(int set, vector<int>& datos, bool orden)
     shellSort(shell, orden);
     fin = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duracion7 = fin - inicio;
-    cout << "7. Shell Sort, " << duracion7.count() << " segundos" << endl;
+    ResultadoAlgoritmo ShellResult;
+            ShellResult.nombre = "Shell Sort";
+            ShellResult.tiempo = duracion7.count();
+            resultados.push_back(ShellResult);
 
     // Actualizar el algoritmo más rápido
     if (duracion7.count() < tiempoMasRapido)
     {algoritmoMasRapido = 7;tiempoMasRapido = duracion7.count();}
+
+    // Mostrar resultados enumerados de la carrera
+    cout << "Resultados de la carrera:" << endl;
+    for (size_t i = 0; i < resultados.size(); ++i) 
+    {
+        cout << i + 1 << ". " << resultados[i].nombre << ": " << resultados[i].tiempo << " segundos" << endl;
+    }
     
     cout << "El ganador es: ";
 
@@ -568,10 +604,6 @@ void carrera(int set, vector<int>& datos, bool orden)
 
 int main() 
 {
-
-    int valor = 0;
-
-    cout << " con un tiempo de segundos" << endl;
 
     vector<int> colaSinRepeticion = numerosAleatoriosSinRepeticion(100000, 110000, 0, 1000000);
     vector<int> colaConRepeticion = numerosAleatoriosConRepeticion(100000, 110000, 0, 1000000);
@@ -644,6 +676,10 @@ int main()
                     bool orden = true;
                     carrera(set, dato, !orden);
                     set++;
+                    if(set > 4)
+                    {
+                        break;
+                    }
                 }
                 break;
             case 3:
